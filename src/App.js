@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import Sidebar from "./components/Sidebar";
+import TextWindow from "./components/TextWindow";
+// import { cardData } from "./components/cardData";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function App() {
+  const [cardToShow, setCardToShow] = useState(1)
+const [content, setContent] = useState()
+  const fetchData =( ) => {
+    axios.get("https://dummyjson.com/todos")
+    .then(data=> {
+      setContent(data.data.todos)
+      console.log(data.data.todos)
+    })
+
+  }
+
+  useEffect(() => {
+    
+  fetchData()
+
+  }, [])
+  
+  if(!content)
+  return null
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    NOTES APP
+  
+    <div style={{display:"flex", width:"100vw",alignItems:"start",justifyContent:'space-evenly'}}>
+      <Sidebar cardData={content} setCardToShow={setCardToShow}/>
+      <TextWindow content={content} cardToShow={cardToShow}/>
+    </div>
     </div>
   );
 }
